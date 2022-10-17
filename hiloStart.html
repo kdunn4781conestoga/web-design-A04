@@ -1,3 +1,11 @@
+<!-- FILE          : hiloStart.html -->
+<!-- PROJECT       : Assignment 4 -->
+<!-- PROGRAMMERS   : Kyle Dunn, David Czachor -->
+<!-- FIRST VERSION : 2022-10-17 -->
+<!-- PURPOSE       :  This page validates user input for the player name 
+                      and max number-->
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -10,13 +18,104 @@
         </style>
 
         <script>
-            function validateInput(event) {
-                event.preventDefault();
+            var currentSection = 0;
+
+            /**
+             * Function   : showErrorMsg()
+             * Purpose    : This function quickly shows and displays an error message
+             *              for the element matching the id
+             * Parameters : elementId : the element id to display the error
+             *              message        : the message to display
+             */
+            function showErrorMsg(elementId, message) {
+                var errorElement = document.getElementById(elementId);
+                errorElement.innerHTML = message;
+                errorElement.style.display = 'inline-block';
             }
+
+            /**
+             * Function   : hideErrorMsgs()
+             * Purpose    : This function hides all elements with classname 'errorMsg'
+             */
+            function hideErrorMsgs() {
+                var errorMsgs = document.getElementsByClassName('errorMsg');
+                for (var i = 0; i < errorMsgs.length; i++) {
+                    errorMsgs[i].style.display = 'none';
+                }
+            }
+
+            // Function   : validateInput()
+            // Purpose    : This function validates the information depending on the
+            //              section it is on
+            // Parameters : event : used for preventing the form from submitting
+            function validateInput(event) {
+                hideErrorMsgs();
+
+                var submitForm = true;
+                var playerNameInput;
+                var maxNumberInput;
+
+                switch (currentSection) {
+                    case 1:
+                        // Check max number input
+                        maxNumberInput = document.getElementById("inputMaxNumber").value;
+
+                        if (!maxNumberInput.match(/^[0-9]+$/)) {
+                            showErrorMsg('errorMaxNumber', 'Incorrect characters used for the max number.');
+
+                            submitForm = false;
+                        }
+                    case 0:
+                        // Check username input
+                        playerNameInput = document.getElementById("inputPlayerName").value;
+
+                        if (!playerNameInput.match(/^[A-Za-z\s]+$/)) {
+                            showErrorMsg('errorPlayerName', 'Incorrect characters used for player name.');
+
+                            submitForm = false;
+                        } else if (currentSection == 0) {
+                            switchToSection(1);
+
+                            submitForm = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                if (!submitForm) {
+                    event.preventDefault();
+                } else {
+                    document.cookie = `currentSection=${currentSection};`;
+                    document.cookie = `playerName=${playerNameInput};`;
+                    document.cookie = `maxNumber=${maxNumberInput};`;
+                }
+            }
+            
+            // Function   : switchToSection()
+            // Purpose    : This function switches to the provided section.
+            //              0 is the player name section and 1 is the max number section
+            // Parameters : sectionNum : the section to switch to
+            function switchToSection(sectionNum) {
+                switch (sectionNum) {
+                    case 0:
+                        document.getElementById('nameSection').style.display = '';
+                        document.getElementById('maxNumberSection').style.display = 'none';
+                        break;
+                    case 1:
+                        document.getElementById('nameSection').style.display = 'none';
+                        document.getElementById('maxNumberSection').style.display = '';
+                        break;
+                }
+
+                currentSection = sectionNum;
+            }
+
+            hideErrorMsgs();
         </script>
     </head>
     <body>
-        <form name="hiLoForm" action="maximumNumber.asp" onsubmit="validateInput(event);">
+        <form name="hiLoForm" action="maximumNumber.asp" method="post" onsubmit="validateInput(event);" autocomplete="off">
             <table border="0">
                 <tr id="nameSection">
                     <td>Please enter your name: </td>
