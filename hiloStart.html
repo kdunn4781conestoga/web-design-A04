@@ -1,4 +1,37 @@
 <!DOCTYPE html>
-<html>
-    
+<html lang="en">
+    <head>
+        <title>Hi-Lo Game</title>
+
+        <style>
+            .errorMsg {
+                color: red;
+            }
+        </style>
+
+        <script>
+            function validateInput(event) {
+                event.preventDefault();
+            }
+        </script>
+    </head>
+    <body>
+        <form name="hiLoForm" action="maximumNumber.asp" onsubmit="validateInput(event);">
+            <table border="0">
+                <tr id="nameSection">
+                    <td>Please enter your name: </td>
+                    <td><input id="inputPlayerName" type="text" name="playerName"></td>
+                    <td id="errorPlayerName" class="errorMsg" style="display: none;">Validation Message</td>
+                </tr>
+                <tr id="maxNumberSection" style="display: none;">
+                    <td>Please enter the maximum number to use: </td>
+                    <td><input id="inputMaxNumber" type="number" name="maximumNumber"></td>
+                    <td id="errorMaxNumber" class="errorMsg" style="display: none;"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><input type="submit" value="Submit" style="width: 100%; margin-top: 10px;"></td>
+                </tr>
+            </table>
+        </form>
+    </body>
 </html>
