@@ -18,8 +18,6 @@
         </style>
 
         <script>
-            var currentSection = 0;
-
             /**
              * Function   : showErrorMsg()
              * Purpose    : This function quickly shows and displays an error message
@@ -53,84 +51,30 @@
 
                 var submitForm = true;
                 var playerNameInput;
-                var maxNumberInput;
 
-                switch (currentSection) {
-                    case 1:
-                        // Check max number input
-                        maxNumberInput = document.getElementById("inputMaxNumber").value;
+                // Check username input
+                playerNameInput = document.getElementById("inputPlayerName").value;
 
-                        if (!maxNumberInput.match(/^[0-9]+$/)) {
-                            showErrorMsg('errorMaxNumber', 'Incorrect characters used for the max number.');
+                if (!playerNameInput.match(/^[A-Za-z\s]+$/)) {
+                    showErrorMsg('errorPlayerName', 'Incorrect characters used for player name.');
 
-                            submitForm = false;
-                        }
-                    case 0:
-                        // Check username input
-                        playerNameInput = document.getElementById("inputPlayerName").value;
-
-                        if (!playerNameInput.match(/^[A-Za-z\s]+$/)) {
-                            showErrorMsg('errorPlayerName', 'Incorrect characters used for player name.');
-
-                            submitForm = false;
-                        } else if (currentSection == 0) {
-                            switchToSection(1);
-
-                            submitForm = false;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                if (!submitForm) {
                     event.preventDefault();
                 } else {
-                    document.cookie = `currentSection=${currentSection};`;
                     document.cookie = `playerName=${playerNameInput};`;
-                    document.cookie = `maxNumber=${maxNumberInput};`;
                 }
-            }
-            
-            // Function   : switchToSection()
-            // Purpose    : This function switches to the provided section.
-            //              0 is the player name section and 1 is the max number section
-            // Parameters : sectionNum : the section to switch to
-            function switchToSection(sectionNum) {
-                switch (sectionNum) {
-                    case 0:
-                        document.getElementById('nameSection').style.display = '';
-                        document.getElementById('maxNumberSection').style.display = 'none';
-                        break;
-                    case 1:
-                        document.getElementById('nameSection').style.display = 'none';
-                        document.getElementById('maxNumberSection').style.display = '';
-                        break;
-                }
-
-                currentSection = sectionNum;
             }
 
             hideErrorMsgs();
         </script>
     </head>
     <body>
-        <form name="hiLoForm" action="maximumNumber.asp" method="post" onsubmit="validateInput(event);" autocomplete="off">
-            <table border="0">
-                <tr id="nameSection">
-                    <td>Please enter your name: </td>
-                    <td><input id="inputPlayerName" type="text" name="playerName"></td>
-                    <td id="errorPlayerName" class="errorMsg" style="display: none;">Validation Message</td>
-                </tr>
-                <tr id="maxNumberSection" style="display: none;">
-                    <td>Please enter the maximum number to use: </td>
-                    <td><input id="inputMaxNumber" type="number" name="maximumNumber"></td>
-                    <td id="errorMaxNumber" class="errorMsg" style="display: none;"></td>
-                </tr>
-                <tr>
-                    <td colspan="3"><input type="submit" value="Submit" style="width: 100%; margin-top: 10px;"></td>
-                </tr>
-            </table>
+        <form name="PlayerNameForm" action="maximumNumber.asp" method="post" onsubmit="validateInput(event);" autocomplete="off">
+            <div>
+                Please enter your name:
+                <input id="inputPlayerName" type="text" name="playerName"></td>
+                <input type="submit" value="Submit">
+                <p id="errorPlayerName" class="errorMsg" style="display: none;">Validation Message</p>
+            </div>
         </form>
     </body>
 </html>
