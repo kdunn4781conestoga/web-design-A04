@@ -2,52 +2,22 @@
 <!-- PROJECT       : Assignment 4 -->
 <!-- PROGRAMMERS   : Kyle Dunn, David Czachor -->
 <!-- FIRST VERSION : 2022-10-17 -->
-<!-- PURPOSE       :  This page validates user input for the player name 
-                      and max number-->
+<!-- PURPOSE       :  This page validates user input for the player name -->
 
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Hi-Lo Game</title>
-
-        <style>
-            .errorMsg {
-                color: red;
-            }
-        </style>
+        <link rel="stylesheet" href="styles.css">
 
         <script>
-            /**
-             * Function   : showErrorMsg()
-             * Purpose    : This function quickly shows and displays an error message
-             *              for the element matching the id
-             * Parameters : elementId : the element id to display the error
-             *              message        : the message to display
-             */
-            function showErrorMsg(elementId, message) {
-                var errorElement = document.getElementById(elementId);
-                errorElement.innerHTML = message;
-                errorElement.style.display = 'inline-block';
-            }
-
-            /**
-             * Function   : hideErrorMsgs()
-             * Purpose    : This function hides all elements with classname 'errorMsg'
-             */
-            function hideErrorMsgs() {
-                var errorMsgs = document.getElementsByClassName('errorMsg');
-                for (var i = 0; i < errorMsgs.length; i++) {
-                    errorMsgs[i].style.display = 'none';
-                }
-            }
-
             // Function   : validateInput()
             // Purpose    : This function validates the information depending on the
             //              section it is on
             // Parameters : event : used for preventing the form from submitting
             function validateInput(event) {
-                hideErrorMsgs();
+                document.getElementById('errorPlayerName').style.display = 'none';
 
                 var submitForm = true;
                 var playerNameInput;
@@ -56,15 +26,13 @@
                 playerNameInput = document.getElementById("inputPlayerName").value;
 
                 if (!playerNameInput.match(/^[A-Za-z\s]+$/)) {
-                    showErrorMsg('errorPlayerName', 'Incorrect characters used for player name.');
+                    document.getElementById('errorPlayerName').style.display = '';
 
                     event.preventDefault();
                 } else {
                     document.cookie = `playerName=${playerNameInput};`;
                 }
             }
-
-            hideErrorMsgs();
         </script>
     </head>
     <body>
@@ -73,7 +41,7 @@
                 Please enter your name:
                 <input id="inputPlayerName" type="text" name="playerName"></td>
                 <input type="submit" value="Submit">
-                <p id="errorPlayerName" class="errorMsg" style="display: none;">Validation Message</p>
+                <p id="errorPlayerName" class="errorMsg" style="display: none;">Incorrect characters used for player name.</p>
             </div>
         </form>
     </body>
