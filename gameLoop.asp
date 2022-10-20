@@ -34,14 +34,75 @@
             }
         </script>
     </head>
+    
+    <%
+        dim playerName
+
+        // Check for player name
+        playerName = Request.Cookies("playerName")
+
+        // Redirects page to start if playerName couldn't be found
+        if (playerName = "") then
+            Response.Redirect("hiloStart.html")
+        end if
+
+        dim maxNumber
+
+        // Check for maximum number
+        maxNumber = Request.Cookies("maximumNumber")
+
+        // Redirects page to start if playerName couldn't be found
+        if (maxNumber = "") then
+            Response.Redirect("maximumNumber.asp")
+        elseif IsNumeric(maxNumber)=true then
+            maxNumber = Int(maxNumber)
+        end if
+
+        dim playerGuess
+
+        // Check for player's guess
+        playerGuess = Request.Form("playerGuess")
+        if (playerGuess <> "") then
+            Response.Cookies("playerGuess") = playerGuess
+        else
+            playerGuess = Request.Cookies("playerGuess")
+        end if
+
+        dim minNumber
+
+        minNumber = Request.Cookies("minimumNumber")
+        if (minNumber = "" or IsNumeric(numberToGuess)=false) then
+            minNumber = 1
+            Response.Cookies("minimumNumber") = minNumber
+        elseif IsNumeric(minNumber) then
+            minNumber = Int(minNumber)
+        end if
+
+        dim numberToGuess
+
+        numberToGuess = Request.Cookies("numberToGuess")
+        if (numberToGuess = "" or IsNumeric(numberToGuess)=false) then
+            numberToGuess = Int((maxNumber-minNumber+1)*Rnd+min)
+            Response.Cookies("numberToGuess") = numberToGuess
+        elseif IsNumeric(numberToGuess) then
+            numberToGuess = Int(numberToGuess)
+        end if
+    %>
 
     <body>
         <form action="gameLoop.asp" method="post" onsubmit="validateInput(event);" name="GuessForm">
             <div>
-                Enter a number between _ and _
+                Enter a number between <%=minNumber%> and <%=maxNumber%>
                 <input id="inputPlayerGuess" type="number" name="playerGuess">
                 <input type="submit" value="Submit">
-                <p id="errorPlayerGuess" class="errorMsg" style="display: none;">Invalid characters used for number.</p> 
+                <% if (playerGuess = "") then %>
+                    <p id="errorPlayerGuess" class="errorMsg" style="display: none;">Invalid characters used for number.</p>
+                <% elseif IsNumeric(playerGuess)=true then %>
+                    <% if (Int(playerGuess) < minNumber or Int(playerGuess) > maxNumber) then %>
+                        <p id="errorPlayerGuess" class="errorMsg">Incorrect range used</p>
+                    <% end if %>
+                    <!-- Implement game logic here -->
+                <% end if %>
             </div>
         </form>
     </body>
