@@ -58,16 +58,6 @@
             maxNumber = Int(maxNumber)
         end if
 
-        dim playerGuess
-
-        // Check for player's guess
-        playerGuess = Request.Form("playerGuess")
-        if (playerGuess <> "") then
-            Response.Cookies("playerGuess") = playerGuess
-        else
-            playerGuess = Request.Cookies("playerGuess")
-        end if
-
         dim minNumber
 
         minNumber = Request.Cookies("minimumNumber")
@@ -86,6 +76,33 @@
             Response.Cookies("numberToGuess") = numberToGuess
         elseif IsNumeric(numberToGuess) then
             numberToGuess = Int(numberToGuess)
+        end if        
+
+        dim playerGuess
+
+        // Check for player's guess
+        playerGuess = Request.Form("playerGuess")
+        if (playerGuess <> "") then
+            Response.Cookies("playerGuess") = playerGuess
+        
+            // Game Logic
+            dim errorMessage
+
+            if (Int(playerGuess) < minNumber or Int(playerGuess) > maxNumber) then
+                errorMessage = "Incorrect range used"
+            elseif Int(playerGuess) < numberToGuess then
+                errorMessage = "Incorrect guess, number is higher"
+                minNumber = Int(playerGuess) + 1
+                Response.Cookies("minimumNumber") = minNumber
+            elseif Int(playerGuess) > numberToGuess then
+                errorMessage="Incorrect guess, number is lower" 
+                maxNumber=Int(playerGuess) - 1
+                Response.Cookies("maximumNumber")=maxNumber
+            else
+                Response.Redirect("gameEnd.asp")
+            end if
+        else
+            playerGuess = Request.Cookies("playerGuess")
         end if
     %>
 
@@ -98,10 +115,7 @@
                 <% if (playerGuess = "") then %>
                     <p id="errorPlayerGuess" class="errorMsg" style="display: none;">Invalid characters used for number.</p>
                 <% elseif IsNumeric(playerGuess)=true then %>
-                    <% if (Int(playerGuess) < minNumber or Int(playerGuess) > maxNumber) then %>
-                        <p id="errorPlayerGuess" class="errorMsg">Incorrect range used</p>
-                    <% end if %>
-                    <!-- Implement game logic here -->
+                    <p id="errorPlayerGuess" class="errorMsg"><%=errorMessage%></p>
                 <% end if %>
             </div>
         </form>
