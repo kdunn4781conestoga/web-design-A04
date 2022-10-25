@@ -24,23 +24,29 @@
             end if
 
             
-            // Check for maximum number
+            // Gets max number
+            dim maximumNumber
             maxNumber = Request.Cookies("maximumNumber")
-            // Check for player guess
+            // Gets player guess
+            dim playerGuess
             playerGuess = Request.Cookies("playerGuess")
+            // Gets number to guess
+            dim numberToGuess
+            numberToGuess = Request.Cookies("numberToGuess")
 
             // Redirects page to start if playerName couldn't be found
             if (maxNumber = "") then
                 Response.Redirect("maximumNumber.asp")
-            else if (playerGuess <> playerGuess) then
+            else if (playerGuess <> numberToGuess) then
                 Response.Redirect("gameLoop.asp")
             end if
             end if
 
-            // Resets Cookies
+            // Clears Cookies
             Response.Cookies("maximumNumber").Expires = DateAdd("d",-1,Now())
             Response.Cookies("minimumNumber").Expires = DateAdd("d",-1,Now())
             Response.Cookies("numberToGuess").Expires = DateAdd("d",-1,Now())
+            Response.Cookies("playerGuess").Expires = DateAdd("d",-1,Now())
         %>
 
         <form action="maximumNumber.asp" method="post" name="MaxNumberForm">
