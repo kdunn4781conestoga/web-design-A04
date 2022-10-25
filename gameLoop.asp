@@ -51,7 +51,7 @@
         // Check for maximum number
         maxNumber = Request.Cookies("maximumNumber")
 
-        // Redirects page to start if playerName couldn't be found
+        // Redirects page to start if maximumNumber couldn't be found
         if (maxNumber = "") then
             Response.Redirect("maximumNumber.asp")
         elseif IsNumeric(maxNumber)=true then
@@ -60,6 +60,8 @@
 
         dim minNumber
 
+        // Check if the minimum number is a cookie
+        // If none can be found then sets it to 1
         minNumber = Request.Cookies("minimumNumber")
         if (minNumber = "" or IsNumeric(numberToGuess)=false) then
             minNumber = 1
@@ -70,9 +72,12 @@
 
         dim numberToGuess
 
+        // Check if the number to guess is a cookie
+        // Generates a random number if none can be found
         numberToGuess = Request.Cookies("numberToGuess")
         if (numberToGuess = "" or IsNumeric(numberToGuess)=false) then
-            numberToGuess = Int((maxNumber-minNumber+1)*Rnd+min)
+            Randomize 
+            numberToGuess = Int((maxNumber-minNumber+1)*Rnd+minNumber)
             Response.Cookies("numberToGuess") = numberToGuess
         elseif IsNumeric(numberToGuess) then
             numberToGuess = Int(numberToGuess)

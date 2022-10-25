@@ -59,8 +59,8 @@
                 <input type="submit" value="Submit">
                 <% if (maxNum="" ) then %>
                     <p id="errorMaxNumber" class="errorMsg" style="display: none;">Incorrect characters used.</p>
-                <% elseif (IsNumeric(maxNum)=true and ((Int(maxNum) < 1) or (Int(maxNum)>= 1000000))) then %>
-                    <p id="errorMaxNumber" class="errorMsg">Max number out of range (1 - 1,000,000)</p>
+                <% elseif (IsNumeric(maxNum)=true and ((Int(maxNum) <= 1) or (Int(maxNum)>= 1000000))) then %>
+                    <p id="errorMaxNumber" class="errorMsg">Max number out of range (2 - 1,000,000)</p>
                 <% else %>
                     <% Response.Redirect("gameLoop.asp") %>
                 <% end if %>

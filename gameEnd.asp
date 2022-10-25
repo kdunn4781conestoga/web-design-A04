@@ -37,9 +37,8 @@
             // Redirects page to start if playerName couldn't be found
             if (maxNumber = "") then
                 Response.Redirect("maximumNumber.asp")
-            else if (playerGuess <> numberToGuess) then
+            elseif (playerGuess <> numberToGuess) then
                 Response.Redirect("gameLoop.asp")
-            end if
             end if
 
             // Clears Cookies
